@@ -20,11 +20,12 @@ public class LoginTest {
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
-  private String testEnv = System.getProperty("exeEnvironment");
-
+  //private String testEnv = System.getProperty("exeEnvironment");
+  private String testEnv = "http://community.sephora.com/";
   @Before
   public void setUp() throws Exception {
-	  String browser = System.getProperty("browserType");
+	 // String browser = System.getProperty("browserType");
+	  String browser="firefox";
 	  if(browser.equals("chrome"))
 	  {
 	       driver = new ChromeDriver();
@@ -38,11 +39,11 @@ public class LoginTest {
 		  driver = new FirefoxDriver();
 	  }
     baseUrl = testEnv;
-    driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+    driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
   }
 
   @Test
-  public void testLogin() throws Exception {
+  public void testSephora() throws Exception {
 	driver.get(baseUrl);
     driver.findElement(By.id("loginPageV2")).click();
     driver.findElement(By.name("login")).sendKeys("admin");
@@ -53,6 +54,17 @@ public class LoginTest {
     driver.findElement(By.id("viewUserProfile")).click();
     driver.findElement(By.id("logoutPage")).click();
   }
+
+	@Test
+	public void testSony() throws Exception {
+		driver.get(baseUrl);
+
+	}
+
+	@Test
+	public void testYoutube() throws Exception {
+		driver.get(baseUrl);
+	}
 
   @After
   public void tearDown() throws Exception {
