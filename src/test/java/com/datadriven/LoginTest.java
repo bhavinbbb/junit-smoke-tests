@@ -2,6 +2,10 @@ package com.datadriven;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -14,57 +18,56 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import com.Base.BaseTest;
+import com.Base.LocatorData;
 
-public class LoginTest {
-  private WebDriver driver;
+@RunWith(Parameterized.class)
+public class LoginTest extends BaseTest{
+
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
+  private String communityName;
+
   //private String testEnv = System.getProperty("exeEnvironment");
-  private String testEnv = "http://community.sephora.com/";
+
   @Before
-  public void setUp() throws Exception {
-	 // String browser = System.getProperty("browserType");
-	  String browser="firefox";
-	  if(browser.equals("chrome"))
-	  {
-	       driver = new ChromeDriver();
-	  }
-	  else if (browser.equals("firefox"))
-	  {
-		  driver = new FirefoxDriver();
-	  }
-	  else
-	  {
-		  driver = new FirefoxDriver();
-	  }
-    baseUrl = testEnv;
-    driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+  public void setUpMethods() throws Exception {
+    setUp();
   }
+
+  @Parameters
+  public static Iterable<? extends Object> paraCommunityName() {
+	String communities="youtube,sephora,xbox,giffgaff";
+	  ArrayList<String> listCommunities = null;
+	  communities=System.getProperty("communities");
+	  listCommunities= new ArrayList(Arrays.asList(communities.split("\\s*,\\s*")));
+	  Collection<Object[]> params = new ArrayList<Object[]>();
+	  for (String s : listCommunities) {
+		  params.add(new Object[] { s });
+	  }
+	  return params;
+  }
+
+ public LoginTest(String communityName){
+	 this.communityName=communityName;
+ }
 
   @Test
-  public void testSephora() throws Exception {
-	driver.get(baseUrl);
-    driver.findElement(By.id("loginPageV2")).click();
-    driver.findElement(By.name("login")).sendKeys("admin");
-    driver.findElement(By.name("password")).sendKeys("arfarf");
-    
-    driver.findElement(By.xpath("//div[contains(@class,'ui-dialog')]//input[contains(@class,'lia-button-Submit-action')]")).click();
-    
-    driver.findElement(By.id("viewUserProfile")).click();
-    driver.findElement(By.id("logoutPage")).click();
+  public void baseTest() throws Exception {
+	  System.out.println("Inside Test:"+communityName);
+	  String [][]data= getTableArray("/Users/bhavin.br/git/junit-smoke-tests/src/test/java/com/Base/LocatorData.xls","LocatorData.xls","Production");
+      LocatorData locatorData=getSelectedRow(communityName,data);
+	  System.out.println("CommunityName:"+locatorData.getCommunityName());
+	  System.out.println("CommunityURL:"+locatorData.getCommunityURL());
+	  System.out.println("LOGIN LINK LOCATOR:"+locatorData.getLoginLinkLocator());
+
   }
 
-	@Test
-	public void testSony() throws Exception {
-		driver.get(baseUrl);
 
-	}
-
-	@Test
-	public void testYoutube() throws Exception {
-		driver.get(baseUrl);
-	}
 
   @After
   public void tearDown() throws Exception {
@@ -75,36 +78,5 @@ public class LoginTest {
     }
   }
 
-  private boolean isElementPresent(By by) {
-    try {
-      driver.findElement(by);
-      return true;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
-  }
 
-  private boolean isAlertPresent() {
-    try {
-      driver.switchTo().alert();
-      return true;
-    } catch (NoAlertPresentException e) {
-      return false;
-    }
-  }
-
-  private String closeAlertAndGetItsText() {
-    try {
-      Alert alert = driver.switchTo().alert();
-      String alertText = alert.getText();
-      if (acceptNextAlert) {
-        alert.accept();
-      } else {
-        alert.dismiss();
-      }
-      return alertText;
-    } finally {
-      acceptNextAlert = true;
-    }
-  }
 }

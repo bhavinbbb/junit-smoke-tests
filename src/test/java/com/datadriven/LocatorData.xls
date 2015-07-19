@@ -1,0 +1,1 @@
+Production							site	sitename	site verifier	login	password		sephora	http://community.sephora.com	"//div[@href,""sephora.lithium]"				sony	http://community.sony.com	"//div[@href,""sony"".lithium]"				youtube	http://community.youtube.com	"//div[@href,""youtube""]"									Production
