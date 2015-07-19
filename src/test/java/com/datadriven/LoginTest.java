@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.AfterClass;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
@@ -31,6 +32,7 @@ public class LoginTest extends BaseTest{
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
   private String communityName;
+  private static List messages = new ArrayList();
 
   //private String testEnv = System.getProperty("exeEnvironment");
 
@@ -59,12 +61,16 @@ public class LoginTest extends BaseTest{
   @Test
   public void baseTest() throws Exception {
 	  System.out.println("Inside Test:"+communityName);
-	  String [][]data= getTableArray("/Users/bhavin.br/git/junit-smoke-tests/src/test/java/com/Base/LocatorData.xls","LocatorData.xls","Production");
+	  String [][]data= getTableArray("src/test/Resources/Data/LocatorData.xls","LocatorData.xls","Production");
       LocatorData locatorData=getSelectedRow(communityName,data);
 	  System.out.println("CommunityName:"+locatorData.getCommunityName());
-	  System.out.println("CommunityURL:"+locatorData.getCommunityURL());
+	  System.out.println("CommunityURL:"+"http://"+locatorData.getCommunityURL());
 	  System.out.println("LOGIN LINK LOCATOR:"+locatorData.getLoginLinkLocator());
 
+	  driver.get("https://"+locatorData.getCommunityURL());
+
+	  Thread.sleep(10000);
+      messages.add("Community "+communityName+" Passing Successfully");
   }
 
 
@@ -77,6 +83,16 @@ public class LoginTest extends BaseTest{
       fail(verificationErrorString);
     }
   }
+
+	@AfterClass
+	public static void last() throws Exception{
+		System.out.println("\n############## SUMMARY #########################\n");
+		for (int i=0;i < messages.size();i++)
+		{
+			System.out.println(messages.get(i));
+		}
+		System.out.println("\n################################################\n");
+	}
 
 
 }
