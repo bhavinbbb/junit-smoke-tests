@@ -26,20 +26,13 @@ import java.io.File;
  * Created by bhavin.br on 7/13/15.
  */
 public class BaseTest {
-	protected String testEnv = "http://community.sephora.com/";
 	protected WebDriver driver;
 	public String browser="firefox";
 	public static Date now = new Date();
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hhmm");
-	public static String time = dateFormat.format(now);
-	public static File dir = new File(time);
+
 
 	public BaseTest(){
 		browser = System.getProperty("browserType");
-	}
-
-	public static void makedir(){
-		dir.mkdir();
 	}
 
 	public void setUp() throws Exception {
@@ -102,6 +95,7 @@ public class BaseTest {
 			  locatorData.setCommunityName(Data[i][0]);
 			  locatorData.setCommunityURL(Data[i][1]);
 			  locatorData.setSiteVerifier(Data[i][2]);
+			  locatorData.setLoginLinkLocator(Data[i][3]);
 			}
 		}
 		return locatorData;
@@ -142,7 +136,6 @@ public class BaseTest {
 			return false;
 		}
 	}
-
 
 
 }

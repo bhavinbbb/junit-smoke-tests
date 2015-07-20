@@ -2,6 +2,9 @@ package com.datadriven;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,12 +41,11 @@ public class LoginTest extends BaseTest{
   private String communityName;
   private static List messages = new ArrayList();
   private static List failed = 	new ArrayList();
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hhmm");
+  public static final String time = dateFormat.format(now);
+  public static final String dirpath="Screenshots/"+time+"/";
+  private String status="Begining";
 
-  //private String testEnv = System.getProperty("exeEnvironment");
-  @BeforeClass
-  public static void setClass(){
-	  makedir();
-  }
 
   @Before
   public void setUpMethods() throws Exception {
@@ -52,10 +54,8 @@ public class LoginTest extends BaseTest{
 
   @Parameters
   public static Iterable<? extends Object> paraCommunityName() {
-	String communities="youtube,sephora,xbox,giffgaff";
 	  ArrayList<String> listCommunities = null;
-	  //communities=System.getProperty("communities");
-	  communities="sony";
+      String communities=System.getProperty("communities");
 	  listCommunities= new ArrayList(Arrays.asList(communities.split("\\s*,\\s*")));
 	  Collection<Object[]> params = new ArrayList<Object[]>();
 	  for (String s : listCommunities) {
@@ -69,8 +69,9 @@ public class LoginTest extends BaseTest{
  }
 
   @Test
-  public void baseTest() throws Exception {
+  public void loginCheckTest() throws Exception {
       try {
+		  status=communityName+"_AtCommunityLoad";
 		  System.out.println("Inside Test:" + communityName);
 		  String[][] data = getTableArray("src/test/Resources/Data/LocatorData.xls", "LocatorData.xls", "Production");
 		  String[][] salesforcedata=getTableArray("src/test/Resources/Data/SalesForceData.xls","SalesForceData.xls","Production");
@@ -82,13 +83,19 @@ public class LoginTest extends BaseTest{
 		  System.out.println("LOGIN LINK LOCATOR:" + locatorData.getLoginLinkLocator());
 
 		  driver.get(locatorData.getCommunityURL());
-		  driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		  Assert.assertTrue("Community " + communityName + "  Page is Not Loaded", driver.findElement(By.className("CommunityPage")).isDisplayed());
+		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		  Thread.sleep(25000);
+		  takeScreenshot();
 		  Assert.assertTrue("Community "+communityName+"  Page is Not Loaded",driver.findElement(By.xpath(locatorData.getSiteVerifier())).isDisplayed());
+		  status=communityName+"_AtSignIn";
+		  driver.findElement(By.xpath(locatorData.getLoginLinkLocator())).click();
+		  driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		  takeScreenshot();
 		  messages.add("Community " + communityName + " Passing Successfully");
 	  }
 	  catch(Exception e){
 		  e.printStackTrace();
+		  takeScreenshot();
 		  failed.add("Community " + communityName + " Failed.");
 		  throw new Exception();
 	  }
@@ -118,6 +125,11 @@ public class LoginTest extends BaseTest{
 			System.out.println(failed.get(i));
 		}
 		System.out.println("\n################################################\n");
+	}
+
+	public void takeScreenshot() throws IOException{
+		screenCapture(dirpath+status);
+
 	}
 
 
