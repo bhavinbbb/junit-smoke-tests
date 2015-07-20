@@ -1,20 +1,26 @@
 package com.Base;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import java.io.File;
 import jxl.*;
+import java.io.File;
 
 /**
  * Created by bhavin.br on 7/13/15.
@@ -23,10 +29,17 @@ public class BaseTest {
 	protected String testEnv = "http://community.sephora.com/";
 	protected WebDriver driver;
 	public String browser="firefox";
+	public static Date now = new Date();
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hhmm");
+	public static String time = dateFormat.format(now);
+	public static File dir = new File(time);
 
 	public BaseTest(){
 		browser = System.getProperty("browserType");
+	}
 
+	public static void makedir(){
+		dir.mkdir();
 	}
 
 	public void setUp() throws Exception {
@@ -82,19 +95,35 @@ public class BaseTest {
 	}
 
 
-    public LocatorData getSelectedRow(String key,String[][]Data){
+    public LocatorData getSelectedRowForLocator(String key,String[][]Data){
 		LocatorData locatorData= new LocatorData();
 		for(int i=0;i<Data.length;i++){
 			if(Data[i][0].equals(key)) {
 			  locatorData.setCommunityName(Data[i][0]);
 			  locatorData.setCommunityURL(Data[i][1]);
-			  locatorData.setLoginLinkLocator(Data[i][2]);
+			  locatorData.setSiteVerifier(Data[i][2]);
 			}
 		}
 		return locatorData;
 	}
 
+	public LoginData getSelectedRowForLogin(String key,String[][]Data){
+		LoginData loginData= new LoginData();
+		for(int i=0;i<Data.length;i++){
+			if(Data[i][0].equals(key)) {
+				loginData.setCommunityName(Data[i][0]);
+				loginData.setCommunityLogin(Data[i][1]);
+				loginData.setCommunityPassword(Data[i][2]);
+			}
+		}
+		return loginData;
+	}
 
+	public void screenCapture(String filename) throws IOException {
+		driver.manage().window().maximize();
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(scrFile, new File(filename));
+	}
 
 	private boolean isElementPresent(By by) {
 		try {

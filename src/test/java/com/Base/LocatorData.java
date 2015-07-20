@@ -6,6 +6,7 @@ package com.Base;
 public class LocatorData {
 	String CommunityName;
 	String CommunityURL;
+	String SiteVerifier;
 	String LoginLinkLocator;
 
 	public String getCommunityName() {
@@ -22,6 +23,14 @@ public class LocatorData {
 
 	public void setCommunityURL(String communityURL) {
 		CommunityURL = communityURL;
+	}
+
+	public String getSiteVerifier() {
+		return SiteVerifier;
+	}
+
+	public void setSiteVerifier(String siteVerifier) {
+		SiteVerifier = siteVerifier;
 	}
 
 	public String getLoginLinkLocator() {
