@@ -8,6 +8,56 @@ public class LocatorData {
 	String CommunityURL;
 	String SiteVerifier;
 	String LoginLinkLocator;
+	String LoginIframeLocator;
+	String LoginLocator;
+	String PasswordLocator;
+	String ButtonLocator;
+	String AfterLoginLocator;
+	String SignoutLocator;
+	String AfterSignoutLocator;
+	String SignoutHover;
+
+	public String getButtonLocator() {
+		return ButtonLocator;
+	}
+
+	public void setButtonLocator(String buttonLocator) {
+		ButtonLocator = buttonLocator;
+	}
+
+
+	public String getLoginIframeLocator() {
+		return LoginIframeLocator;
+	}
+
+	public void setLoginIframeLocator(String loginIframeLocator) {
+		LoginIframeLocator = loginIframeLocator;
+	}
+
+	public String getAfterLoginLocator() {
+		return AfterLoginLocator;
+	}
+
+	public void setAfterLoginLocator(String afterLoginLocator) {
+		AfterLoginLocator = afterLoginLocator;
+	}
+
+	public String getSignoutLocator() {
+		return SignoutLocator;
+	}
+
+	public void setSignoutLocator(String signoutLocator) {
+		SignoutLocator = signoutLocator;
+	}
+
+	public String getAfterSignoutLocator() {
+		return AfterSignoutLocator;
+	}
+
+	public void setAfterSignoutLocator(String afterSignoutLocator) {
+		AfterSignoutLocator = afterSignoutLocator;
+	}
+
 
 	public String getCommunityName() {
 		return CommunityName;
@@ -41,7 +91,28 @@ public class LocatorData {
 		LoginLinkLocator = loginLinkLocator;
 	}
 
+	public String getPasswordLocator() {
+		return PasswordLocator;
+	}
 
+	public void setPasswordLocator(String passwordLocator) {
+		PasswordLocator = passwordLocator;
+	}
+
+	public String getLoginLocator() {
+		return LoginLocator;
+	}
+
+	public void setLoginLocator(String loginLocator) {
+		LoginLocator = loginLocator;
+	}
+	public String getSignoutHover() {
+		return SignoutHover;
+	}
+
+	public void setSignoutHover(String signoutHover) {
+		SignoutHover = signoutHover;
+	}
 
 
 }

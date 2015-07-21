@@ -96,6 +96,14 @@ public class BaseTest {
 			  locatorData.setCommunityURL(Data[i][1]);
 			  locatorData.setSiteVerifier(Data[i][2]);
 			  locatorData.setLoginLinkLocator(Data[i][3]);
+			  locatorData.setLoginLocator(Data[i][4]);
+			  locatorData.setPasswordLocator(Data[i][5]);
+			  locatorData.setButtonLocator(Data[i][6]);
+			  locatorData.setAfterLoginLocator(Data[i][7]);
+			  locatorData.setSignoutLocator(Data[i][8]);
+			  locatorData.setAfterSignoutLocator(Data[i][9]);
+			  locatorData.setSignoutHover(Data[i][10]);
+			  locatorData.setLoginIframeLocator(Data[i][11]);
 			}
 		}
 		return locatorData;

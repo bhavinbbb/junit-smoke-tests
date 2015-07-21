@@ -21,6 +21,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ import com.Base.LocatorData;
 import com.Base.LoginData;
 
 import org.junit.Assert;
+import org.openqa.selenium.interactions.Actions;
 
 @RunWith(Parameterized.class)
 public class LoginTest extends BaseTest{
@@ -41,7 +43,7 @@ public class LoginTest extends BaseTest{
   private String communityName;
   private static List messages = new ArrayList();
   private static List failed = 	new ArrayList();
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hhmm");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmm");
   public static final String time = dateFormat.format(now);
   public static final String dirpath="Screenshots/"+time+"/";
   private String status="Begining";
@@ -56,6 +58,7 @@ public class LoginTest extends BaseTest{
   public static Iterable<? extends Object> paraCommunityName() {
 	  ArrayList<String> listCommunities = null;
       String communities=System.getProperty("communities");
+	  //String communities="";
 	  listCommunities= new ArrayList(Arrays.asList(communities.split("\\s*,\\s*")));
 	  Collection<Object[]> params = new ArrayList<Object[]>();
 	  for (String s : listCommunities) {
@@ -71,7 +74,7 @@ public class LoginTest extends BaseTest{
   @Test
   public void loginCheckTest() throws Exception {
       try {
-		  status=communityName+"_AtCommunityLoad";
+		  status=communityName+"_CommunityLoad";
 		  System.out.println("Inside Test:" + communityName);
 		  String[][] data = getTableArray("src/test/Resources/Data/LocatorData.xls", "LocatorData.xls", "Production");
 		  String[][] salesforcedata=getTableArray("src/test/Resources/Data/SalesForceData.xls","SalesForceData.xls","Production");
@@ -83,20 +86,47 @@ public class LoginTest extends BaseTest{
 		  System.out.println("LOGIN LINK LOCATOR:" + locatorData.getLoginLinkLocator());
 
 		  driver.get(locatorData.getCommunityURL());
-		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		  Thread.sleep(25000);
-		  takeScreenshot();
+		  postSubmit();
 		  Assert.assertTrue("Community "+communityName+"  Page is Not Loaded",driver.findElement(By.xpath(locatorData.getSiteVerifier())).isDisplayed());
-		  status=communityName+"_AtSignIn";
+		  status=communityName+"_SignInLink";
 		  driver.findElement(By.xpath(locatorData.getLoginLinkLocator())).click();
-		  driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		  takeScreenshot();
+		  postSubmit();
+
+
+		  if(!locatorData.getLoginIframeLocator().isEmpty()){
+			  driver.switchTo().frame(driver.findElement(By.xpath(locatorData.getLoginIframeLocator())));
+		  }
+
+		  Assert.assertTrue("Community "+communityName+"  Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getLoginLocator())).isDisplayed());
+		  status=communityName+"_SignInOnCommunity";
+		  driver.findElement(By.xpath(locatorData.getLoginLocator())).sendKeys(loginData.getCommunityLogin());
+		  driver.findElement(By.xpath(locatorData.getPasswordLocator())).sendKeys(loginData.getCommunityPassword());
+		  driver.findElement(By.xpath(locatorData.getButtonLocator())).click();
+
+		  if(!locatorData.getLoginIframeLocator().isEmpty()){
+			  driver.switchTo().defaultContent();
+		  }
+
+		  postSubmit();
+		  Assert.assertTrue("Community "+communityName+"  After Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterLoginLocator())).isDisplayed());
+		  status=communityName+"_SignOut";
+		  if(!locatorData.getSignoutHover().isEmpty()){
+			  driver.findElement(By.xpath(locatorData.getSignoutHover())).click();
+			  Thread.sleep(1000);
+			  driver.findElement(By.xpath(locatorData.getSignoutLocator())).click();
+		  }
+		  else {
+			  driver.findElement(By.xpath(locatorData.getSignoutLocator())).click();
+		  }
+		  postSubmit();
+		  Assert.assertTrue("Community "+communityName+"  After Signout Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterSignoutLocator())).isDisplayed());
 		  messages.add("Community " + communityName + " Passing Successfully");
 	  }
 	  catch(Exception e){
 		  e.printStackTrace();
+		  failed.add("Community " + communityName + " Failed."+" Possible Error "+status);
+		  status="At_Error_Page";
 		  takeScreenshot();
-		  failed.add("Community " + communityName + " Failed.");
 		  throw new Exception();
 	  }
   }
@@ -130,6 +160,12 @@ public class LoginTest extends BaseTest{
 	public void takeScreenshot() throws IOException{
 		screenCapture(dirpath+status);
 
+	}
+
+	public void postSubmit() throws Exception{
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		Thread.sleep(1000);
+		takeScreenshot();
 	}
 
 
