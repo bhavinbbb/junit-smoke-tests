@@ -1,8 +1,6 @@
 package com.datadriven;
 
 import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,37 +8,25 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.AfterClass;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import com.Base.BaseTest;
 import com.Base.LocatorData;
 import com.Base.LoginData;
-
 import org.junit.Assert;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RunWith(Parameterized.class)
 public class LoginTest extends BaseTest{
 
-  private String baseUrl;
-  private boolean acceptNextAlert = true;
+
   private StringBuffer verificationErrors = new StringBuffer();
   private String communityName;
   private static List messages = new ArrayList();
@@ -88,12 +74,12 @@ public class LoginTest extends BaseTest{
 		  System.out.println("LOGIN LINK LOCATOR:" + locatorData.getLoginLinkLocator());
 
 		  driver.get(locatorData.getCommunityURL());
-		  postSubmit();
+		  screenshotSubmit();
 		  Assert.assertTrue("Community "+communityName+"  Page is Not Loaded",driver.findElement(By.xpath(locatorData.getSiteVerifier())).isDisplayed());
 		  status=communityName+"_SignInLink";
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLinkLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLinkLocator())).click();
-		  postSubmit();
+		  screenshotSubmit();
 
 
 		  if(!locatorData.getLoginIframeLocator().isEmpty()){
@@ -110,7 +96,7 @@ public class LoginTest extends BaseTest{
 			  driver.switchTo().defaultContent();
 		  }
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getAfterLoginLocator())));
-		  postSubmit();
+		  screenshotSubmit();
 		  Assert.assertTrue("Community "+communityName+"  After Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterLoginLocator())).isDisplayed());
 		  status=communityName+"_SignOut";
 		  if(!locatorData.getSignoutHover().isEmpty()){
@@ -121,7 +107,7 @@ public class LoginTest extends BaseTest{
 		  else {
 			  driver.findElement(By.xpath(locatorData.getSignoutLocator())).click();
 		  }
-		  postSubmit();
+		  screenshotSubmit();
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getAfterSignoutLocator())));
 		  Assert.assertTrue("Community "+communityName+"  After Signout Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterSignoutLocator())).isDisplayed());
 		  messages.add("Community " + communityName + " Passing Successfully");
@@ -170,7 +156,7 @@ public class LoginTest extends BaseTest{
 
 	}
 
-	public void postSubmit() throws Exception{
+	public void screenshotSubmit() throws Exception{
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		Thread.sleep(1000);
 		takeScreenshot();
