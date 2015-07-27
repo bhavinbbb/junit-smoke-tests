@@ -76,7 +76,7 @@ public class LoginTest extends BaseTest{
 		  driver.get(locatorData.getCommunityURL());
 		  screenshotSubmit();
 		  Assert.assertTrue("Community "+communityName+"  Page is Not Loaded",driver.findElement(By.xpath(locatorData.getSiteVerifier())).isDisplayed());
-		  status=communityName+"_SignInLink";
+		  status=communityName+"_On_SignIn_Page";
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLinkLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLinkLocator())).click();
 		  screenshotSubmit();
@@ -87,7 +87,7 @@ public class LoginTest extends BaseTest{
 		  }
 
 		  Assert.assertTrue("Community "+communityName+"  Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getLoginLocator())).isDisplayed());
-		  status=communityName+"_SignInOnCommunity";
+		  status=communityName+"_After_SignIn";
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLocator())).sendKeys(loginData.getCommunityLogin());
 		  driver.findElement(By.xpath(locatorData.getPasswordLocator())).sendKeys(loginData.getCommunityPassword());
@@ -98,7 +98,7 @@ public class LoginTest extends BaseTest{
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getAfterLoginLocator())));
 		  screenshotSubmit();
 		  Assert.assertTrue("Community "+communityName+"  After Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterLoginLocator())).isDisplayed());
-		  status=communityName+"_SignOut";
+		  status=communityName+"_After_SignOut";
 		  if(!locatorData.getSignoutHover().isEmpty()){
 			  driver.findElement(By.xpath(locatorData.getSignoutHover())).click();
 			  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getSignoutLocator())));
