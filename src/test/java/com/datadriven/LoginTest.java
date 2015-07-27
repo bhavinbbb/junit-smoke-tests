@@ -33,7 +33,7 @@ public class LoginTest extends BaseTest{
   private static List failed = 	new ArrayList();
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmm");
   public static final String time = dateFormat.format(now);
-  public static final String dirpath="Screenshots/"+time+"/";
+  public static String dirpath="Screenshots/"+time+"/";
   private String status="Begining";
 
 
@@ -114,8 +114,9 @@ public class LoginTest extends BaseTest{
 	  }
 	  catch(Exception e){
 		  e.printStackTrace();
-		  failed.add("Community " + communityName + " Failed."+" Possible Error "+status);
+		  failed.add("Community " + communityName + " Failed." + " Possible Error " + status);
 		  status=communityName+"_At_Error_Page";
+		  dirpath=dirpath+"Error/";
 		  takeScreenshot();
 		  throw new Exception();
 	  }
