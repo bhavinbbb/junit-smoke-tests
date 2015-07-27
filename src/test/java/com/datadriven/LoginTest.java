@@ -115,8 +115,7 @@ public class LoginTest extends BaseTest{
 	  catch(Exception e){
 		  e.printStackTrace();
 		  failed.add("Community " + communityName + " Failed." + " Possible Error " + status);
-		  status=communityName+"_At_Error_Page";
-		  dirpath=dirpath+"Error/";
+		  status="Error/"+communityName+"_At_Error_Page";
 		  takeScreenshot();
 		  throw new Exception();
 	  }
