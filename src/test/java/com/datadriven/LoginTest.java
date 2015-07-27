@@ -87,7 +87,7 @@ public class LoginTest extends BaseTest{
 		  }
 
 		  Assert.assertTrue("Community "+communityName+"  Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getLoginLocator())).isDisplayed());
-		  status=communityName+"_After_SignIn";
+		  status=communityName+"_After_Signing_Into_Community";
 		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLocator())).sendKeys(loginData.getCommunityLogin());
 		  driver.findElement(By.xpath(locatorData.getPasswordLocator())).sendKeys(loginData.getCommunityPassword());
