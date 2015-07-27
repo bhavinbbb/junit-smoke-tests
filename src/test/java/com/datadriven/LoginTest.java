@@ -33,6 +33,8 @@ import com.Base.LoginData;
 
 import org.junit.Assert;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RunWith(Parameterized.class)
 public class LoginTest extends BaseTest{
@@ -89,6 +91,7 @@ public class LoginTest extends BaseTest{
 		  postSubmit();
 		  Assert.assertTrue("Community "+communityName+"  Page is Not Loaded",driver.findElement(By.xpath(locatorData.getSiteVerifier())).isDisplayed());
 		  status=communityName+"_SignInLink";
+		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLinkLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLinkLocator())).click();
 		  postSubmit();
 
@@ -99,14 +102,14 @@ public class LoginTest extends BaseTest{
 
 		  Assert.assertTrue("Community "+communityName+"  Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getLoginLocator())).isDisplayed());
 		  status=communityName+"_SignInOnCommunity";
+		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getLoginLocator())));
 		  driver.findElement(By.xpath(locatorData.getLoginLocator())).sendKeys(loginData.getCommunityLogin());
 		  driver.findElement(By.xpath(locatorData.getPasswordLocator())).sendKeys(loginData.getCommunityPassword());
 		  driver.findElement(By.xpath(locatorData.getButtonLocator())).click();
-
 		  if(!locatorData.getLoginIframeLocator().isEmpty()){
 			  driver.switchTo().defaultContent();
 		  }
-
+		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getAfterLoginLocator())));
 		  postSubmit();
 		  Assert.assertTrue("Community "+communityName+"  After Login Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterLoginLocator())).isDisplayed());
 		  status=communityName+"_SignOut";
@@ -119,13 +122,14 @@ public class LoginTest extends BaseTest{
 			  driver.findElement(By.xpath(locatorData.getSignoutLocator())).click();
 		  }
 		  postSubmit();
+		  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getAfterSignoutLocator())));
 		  Assert.assertTrue("Community "+communityName+"  After Signout Page is Not Loaded",driver.findElement(By.xpath(locatorData.getAfterSignoutLocator())).isDisplayed());
 		  messages.add("Community " + communityName + " Passing Successfully");
 	  }
 	  catch(Exception e){
 		  e.printStackTrace();
 		  failed.add("Community " + communityName + " Failed."+" Possible Error "+status);
-		  status="At_Error_Page";
+		  status=communityName+"_At_Error_Page";
 		  takeScreenshot();
 		  throw new Exception();
 	  }
@@ -154,7 +158,11 @@ public class LoginTest extends BaseTest{
 		{
 			System.out.println(failed.get(i));
 		}
+		String current = new java.io.File( "." ).getCanonicalPath();
+		System.out.println("\nScreenShots are located at:"+current+"/"+dirpath);
 		System.out.println("\n################################################\n");
+
+
 	}
 
 	public void takeScreenshot() throws IOException{

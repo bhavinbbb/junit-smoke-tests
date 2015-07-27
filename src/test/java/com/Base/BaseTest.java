@@ -124,7 +124,7 @@ public class BaseTest {
 	public void screenCapture(String filename) throws IOException {
 		driver.manage().window().maximize();
 		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(scrFile, new File(filename));
+		FileUtils.copyFile(scrFile, new File(filename+".png"));
 	}
 
 	private boolean isElementPresent(By by) {
