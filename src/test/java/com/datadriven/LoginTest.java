@@ -115,7 +115,7 @@ public class LoginTest extends BaseTest{
 		  status=communityName+"_SignOut";
 		  if(!locatorData.getSignoutHover().isEmpty()){
 			  driver.findElement(By.xpath(locatorData.getSignoutHover())).click();
-			  Thread.sleep(1000);
+			  new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.xpath(locatorData.getSignoutLocator())));
 			  driver.findElement(By.xpath(locatorData.getSignoutLocator())).click();
 		  }
 		  else {
@@ -149,14 +149,14 @@ public class LoginTest extends BaseTest{
 	@AfterClass
 	public static void last() throws Exception{
 		System.out.println("\n############## SUMMARY #########################\n");
-		for (int i=0;i < messages.size();i++)
+		for (int successmessagecount=0;successmessagecount < messages.size();successmessagecount++)
 		{
-			System.out.println(messages.get(i));
+			System.out.println(messages.get(successmessagecount));
 		}
 		System.out.println();
-		for (int i=0;i < failed.size();i++)
+		for (int failuremsgcount=0;failuremsgcount < failed.size();failuremsgcount++)
 		{
-			System.out.println(failed.get(i));
+			System.out.println(failed.get(failuremsgcount));
 		}
 		String current = new java.io.File( "." ).getCanonicalPath();
 		System.out.println("\nScreenShots are located at:"+current+"/"+dirpath);
