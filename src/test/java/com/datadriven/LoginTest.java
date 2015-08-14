@@ -33,7 +33,7 @@ public class LoginTest extends BaseTest{
   private static List failed = 	new ArrayList();
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmm");
   public static final String time = dateFormat.format(now);
-  public static String dirpath="Screenshots/"+time+"/";
+  public static String dirpath="src/test/Resources/Screenshots/"+time+"/";  //  /Users/bhavin.br/git/junit-smoke-tests/
   private String status="Begining";
 
 
